@@ -21,29 +21,74 @@ import com.jeya.beansbinding.dataprovider.Dummy;
 import com.jeya.beansbinding.sortingorder.data.Unit;
 import com.jeya.beansbinding.sortingorder.model.SortingOrderSearchPanelModel;
 
-public class SortingOrderSearchPanel extends JPanel{
+public class SortingOrderSearchPanel extends JPanel {
 	private JComboBox<Unit> comboBox;
 	private SortingOrderSearchPanelModel sortingOrderSearchPanelModel;
+
 	public SortingOrderSearchPanel() {
 		init();
 	}
-	
-	public void initBinding()
-	{
-		// It binds the list of units to comboBox : Bind View to Model ??
-		// Unit's toString() value will be shown in comboBox
-		JComboBoxBinding<Unit, List<Unit>, JComboBox> jComboBinding = SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ, Dummy.getUnits(), getComboBox());
+
+	public void initBinding() {
+		/* It binds the list of units to comboBox.
+		 Unit's toString() value will be shown in comboBox.
+		 So toString() method of Object class has been overridden in Unit class in order to show the unit name.*/
+		JComboBoxBinding<Unit, List<Unit>, JComboBox> jComboBinding = SwingBindings
+				.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ,
+						Dummy.getUnits(), getComboBox());
 		jComboBinding.bind();
+
+		/**
+		   It works as follows:
+		   
+		   JComboBox's selectedItem is bound with SortingOrderSearchPanelModel's selectedUnit
+		   Source: JComboBox
+		   Target: SortingOrderSearchPanelModel
+		   Source Property: JComboBox's selectedItem
+		   Target Property: SortingOrderSearchPanelModel's selectedUnit
+		   
+		   Beans Binding invokes JComboBox's getSelectedItem() method to get the value to bind.
+		   The method to invoke is found by property name and Java naming convention for getter methods.
+		   Since property name is "selectedItem", it looks for getSelectedItem()
+		   inside JComboBox class.
+		   
+		   (Note: 
+		   1. Property name should not start with capital letter.
+		   2. Attribute name of class can be some other name: it can differ from property name. But getter method should be
+		    get<Property name starts with capital letter>() to be identified by binding.
+		   3. Value from source is assigned to value to target. So it should be a valid assignment.
+		    Otherwise ClassCastException will occur in run time)
+		   
+		   value from getSelectedItem() will be bound with SortingOrderSearchPanelModel's Unit.
+		   Binding invokes setSelectedUnit() method from SortingOrderSearchPanelModel class since property name is
+		   "selectedUnit".
+		 */
+		// BeanProperty<Source type, Object type to be bound from Source type>
+		// comboBoxSelectedItemProperty = BeanProperty.create(<property to be bound>);
+		BeanProperty<JComboBox, Unit> comboBoxSelectedItemProperty = BeanProperty
+				.create("selectedItem");
 		
-		BeanProperty<JComboBox<Unit>, Unit> comboBoxSelectedItemProperty = BeanProperty.create("selectedItem");
-		BeanProperty<SortingOrderSearchPanelModel, Unit> sortingOrderSearchPanelModelSelectedUnitProperty = BeanProperty.create("selectedUnit");
-		AutoBinding<JComboBox<Unit>, Unit, SortingOrderSearchPanelModel, Unit> autoBinding = Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ, getComboBox(), comboBoxSelectedItemProperty, sortingOrderSearchPanelModel.getSelectedUnit(), sortingOrderSearchPanelModelSelectedUnitProperty);
+		//	BeanProperty<Target type, Object type to be bound from Target type>
+		//	sortingOrderSearchPanelModelSelectedUnitProperty = BeanProperty
+		//		.create(<property to be bound>);
+		BeanProperty<SortingOrderSearchPanelModel, Unit> sortingOrderSearchPanelModelSelectedUnitProperty = BeanProperty
+				.create("selectedUnit");
+		//	AutoBinding<Source type, Object type to be bound from Source type, 
+		// Target type, Object type to be bound from Target type>
+		// autoBinding = Bindings
+		// .createAutoBinding(AutoBinding.UpdateStrategy.READ, getComboBox(),
+		// comboBoxSelectedItemProperty, sortingOrderSearchPanelModel,
+		// sortingOrderSearchPanelModelSelectedUnitProperty);
+		AutoBinding<JComboBox, Unit, SortingOrderSearchPanelModel, Unit> autoBinding = Bindings
+				.createAutoBinding(AutoBinding.UpdateStrategy.READ,
+						getComboBox(), comboBoxSelectedItemProperty,
+						sortingOrderSearchPanelModel,
+						sortingOrderSearchPanelModelSelectedUnitProperty);
 		autoBinding.bind();
 	}
 
-	private JComboBox<Unit> getComboBox() {
-		if(comboBox == null)
-		{
+	private JComboBox getComboBox() {
+		if (comboBox == null) {
 			comboBox = new JComboBox<Unit>();
 		}
 		return comboBox;
@@ -52,7 +97,7 @@ public class SortingOrderSearchPanel extends JPanel{
 	private void init() {
 		setBackground(Color.PINK);
 		setLayout(new GridBagLayout());
-		
+
 		JLabel lblUnit = new JLabel("Unit");
 		GridBagConstraints gbc_lblUnit = new GridBagConstraints();
 		gbc_lblUnit.weightx = 0.3;
@@ -62,7 +107,7 @@ public class SortingOrderSearchPanel extends JPanel{
 		gbc_lblUnit.gridx = 0;
 		gbc_lblUnit.gridy = 0;
 		add(lblUnit, gbc_lblUnit);
-		
+
 		GridBagConstraints gbc_comboBox = new GridBagConstraints();
 		gbc_comboBox.gridwidth = 2;
 		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
@@ -72,7 +117,7 @@ public class SortingOrderSearchPanel extends JPanel{
 		gbc_comboBox.gridx = 1;
 		gbc_comboBox.gridy = 0;
 		add(getComboBox(), gbc_comboBox);
-		
+
 		JTree tree = new JTree();
 		tree.setBackground(Color.PINK);
 		GridBagConstraints gbc_tree = new GridBagConstraints();
