@@ -4,10 +4,17 @@ import com.jeya.beansbinding.sortingorder.data.Unit;
 
 public class SortingOrderSearchPanelModel extends AbstractModelObject{
 	private Unit selectedUnit = new Unit("");
+	private SortingOrderPanelModel parentModel;
+	private SortingOrderTreeModel treeModel;
 	
 	public SortingOrderSearchPanelModel()
 	{
-		
+		treeModel = new SortingOrderTreeModel(null);
+	}
+	
+	public SortingOrderTreeModel getSortingOrderTreeModel()
+	{
+		return treeModel;
 	}
 
 	public Unit getSelectedUnit() {
@@ -18,7 +25,19 @@ public class SortingOrderSearchPanelModel extends AbstractModelObject{
 	public void setSelectedUnit(Unit newSelectedUnit) {
 		Unit oldValue = selectedUnit;
 		this.selectedUnit = newSelectedUnit;
-		System.out.println(newSelectedUnit);
+		buildTrees(selectedUnit);
 		firePropertyChange("selectedUnit", oldValue, selectedUnit);
+	}
+
+	private void buildTrees(Unit selectedUnit) {
+		treeModel.buildSortingOrderTree(selectedUnit);
+	}
+
+	public SortingOrderPanelModel getParentModel() {
+		return parentModel;
+	}
+
+	public void setParentModel(SortingOrderPanelModel parentModel) {
+		this.parentModel = parentModel;
 	}
 }

@@ -6,7 +6,8 @@ public class SortingOrderPanelModel {
 	
 	public SortingOrderPanelModel()
 	{
-		
+		sortingOrderSearchPanelModel.setParentModel(this);
+		investigationsPanelModel.setParentPanel(this);
 	}
 
 	public SortingOrderSearchPanelModel getSortingOrderSearchPanelModel() {

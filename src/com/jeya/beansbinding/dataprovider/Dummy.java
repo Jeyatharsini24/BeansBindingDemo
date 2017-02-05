@@ -21,6 +21,22 @@ public class Dummy {
 		}
 	}
 	
+	public static List<Investigation> getInvestigations(String unitName)
+	{
+		List<Investigation>investigations = new ArrayList<Investigation>();
+		List<SortingOrder>sortingOrderForAUnit = sortingOrders.get(unitName);
+		for(int i = 0; i < sortingOrderForAUnit.size(); i++)
+		{
+			List<Investigation>investigationForASortingOrder = sortingOrderForAUnit.get(i).getInvestigationList();
+			for(int j = 0; j < investigationForASortingOrder.size(); j++)
+			{
+				// can check for duplicate
+				investigations.add(investigationForASortingOrder.get(j));
+			}
+		}
+		return investigations;
+	}
+
 	public static List<Unit> getUnits()
 	{
 		setUnits();
@@ -39,7 +55,7 @@ public class Dummy {
 				List<Investigation>investigationList = new ArrayList();
 				for(int k = 0; k < 3; k++)
 				{
-					investigationList.add(new Investigation("Investigation: " + k, "Unit Name: " + i));
+					investigationList.add(new Investigation("Investigation: " +i+l+k, "Unit Name: " + i));
 				}
 				sortingOrder.setSortingOrderName("Sorting Order: " + l);
 				sortingOrder.setInvestigationList(investigationList);

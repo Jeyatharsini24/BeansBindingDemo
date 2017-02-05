@@ -24,6 +24,7 @@ import com.jeya.beansbinding.sortingorder.model.SortingOrderSearchPanelModel;
 public class SortingOrderSearchPanel extends JPanel {
 	private JComboBox<Unit> comboBox;
 	private SortingOrderSearchPanelModel sortingOrderSearchPanelModel;
+	private JTree tree = new JTree();
 
 	public SortingOrderSearchPanel() {
 		init();
@@ -118,8 +119,8 @@ public class SortingOrderSearchPanel extends JPanel {
 		gbc_comboBox.gridy = 0;
 		add(getComboBox(), gbc_comboBox);
 
-		JTree tree = new JTree();
 		tree.setBackground(Color.PINK);
+		tree.setCellRenderer(new SortingOrderCellRenderer());
 		GridBagConstraints gbc_tree = new GridBagConstraints();
 		gbc_tree.gridwidth = 3;
 		gbc_tree.weightx = 1.0;
@@ -135,5 +136,6 @@ public class SortingOrderSearchPanel extends JPanel {
 	public void setModel(
 			SortingOrderSearchPanelModel sortingOrderSearchPanelModel) {
 		this.sortingOrderSearchPanelModel = sortingOrderSearchPanelModel;
+		tree.setModel(sortingOrderSearchPanelModel.getSortingOrderTreeModel());
 	}
 }
