@@ -40,6 +40,7 @@ public class SortingOrderSearchPanel extends JPanel {
 		jComboBinding.bind();
 
 		/**
+		   (Based on the property name framework create method name and it invokes method using reflection)
 		   It works as follows:
 		   
 		   JComboBox's selectedItem is bound with SortingOrderSearchPanelModel's selectedUnit
