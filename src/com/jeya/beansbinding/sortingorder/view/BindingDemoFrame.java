@@ -8,8 +8,8 @@ public class BindingDemoFrame extends JFrame{
 		super("Binding Demo");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(400, 500);
-		setVisible(true);
 		SortingOrderPanel sortingOrderPanel = new SortingOrderPanel();
 		getContentPane().add(sortingOrderPanel);
+		setVisible(true);
 	}
 }
